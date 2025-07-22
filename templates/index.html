@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>🌾 Crop Recommendation</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: url('https://images.nationalgeographic.org/image/upload/t_edhub_resource_key_image/v1638892233/EducationHub/photos/crops-growing-in-thailand.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+
+    .main-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* Makes boxes equal height */
+  padding: 60px;
+  gap: 40px;
+}
+
+
+    .form-container, .result-container {
+  background: rgba(255, 255, 255, 0.88);
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  min-height: 630px;  /* ✅ Equal box height */
+  transition: all 0.5s ease-in-out;
+}
+
+
+    .form-container {
+      animation: slide-left 0.6s ease forwards;
+    }
+
+    .result-container {
+      animation: slide-right 0.6s ease forwards;
+      position: relative;
+    }
+
+    @keyframes slide-left {
+      from { transform: translateX(0); }
+      to { transform: translateX(-20px); }
+    }
+
+    @keyframes slide-right {
+      from { opacity: 0; transform: translateX(60px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: #2f855a;
+      margin-bottom: 30px;
+    }
+h2 { font-family: 'Merriweather', serif; }
+
+
+    label {
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    
+.table-container {
+  margin-top: 30px;
+  text-align: center;
+}
+
+
+.recommendation-table {
+  margin: 0 auto; /* Center the table */
+  border-collapse: collapse;
+  width: 90%;
+  max-width: 400px;
+  font-size: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.recommendation-table th {
+  background-color: #c6f6d5; /* Light green */
+  color: #22543d;
+  padding: 10px;
+}
+
+.recommendation-table td {
+  background-color: #f0fff4;
+  padding: 8px 12px;
+  border-bottom: 1px solid #a0aec0;
+}
+
+.recommendation-table tr:last-child td {
+  border-bottom: none;
+}
+
+.download-form {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  z-index: 10;
+}
+
+.download-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #222; /* dark grey */
+  cursor: pointer;
+  padding: 0;
+  transition: none;
+}
+
+.download-btn:hover,
+.download-btn:focus {
+  color: #222;
+  background: none;
+  outline: none;
+  box-shadow: none;
+  transform: none;
+}
+
+
+    button {
+      padding: 12px;
+      width: 100%;
+      background-color: #38a169;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2f855a;
+    }
+
+    img {
+      width: 100%;
+      max-height: 250px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 15px 0;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+
+    li {
+      color: #2c5282;
+      margin-bottom: 6px;
+    }
+
+    h3, h4 {
+      margin-top: 0;
+      color: #2f855a;
+    }
+    .shape-divider {
+  width: 100%;
+  height: 25px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #38a169,
+    #38a169 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  opacity: 0.2;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+.fancy-hr {
+  margin-top: 60px;
+  border: 0;
+  height: 2px;
+  background: linear-gradient(to right, #a0d9a4, #38a169, #a0d9a4);
+  margin: 25px 0 10px 0;
+  border-radius: 50px;
+  opacity: 0.6;
+}
+
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="form-container">
+      <h2> SMART CROP RECOMMENDER</h2>
+      <form action="/predict" method="post">
+        <label>Nitrogen (N)</label>
+        <input type="number" name="N" placeholder="e.g. 90" required>
+
+        <label>Phosphorus (P)</label>
+        <input type="number" name="P" placeholder="e.g. 45" required>
+
+        <label>Potassium (K)</label>
+        <input type="number" name="K" placeholder="e.g. 60" required>
+
+        <label>Temperature (°C)</label>
+        <input type="number" step="0.1" name="temperature" placeholder="e.g. 26.5" required>
+
+        <label>Humidity (%)</label>
+        <input type="number" step="0.1" name="humidity" placeholder="e.g. 65" required>
+
+        <label>pH</label>
+        <input type="number" step="0.1" name="ph" placeholder="e.g. 6.5" required>
+
+        <label>Rainfall (mm)</label>
+        <input type="number" step="0.1" name="rainfall" placeholder="e.g. 800" required>
+        <div style="margin-top: 25px;">
+        <div class="shape-divider"></div>
+        <hr class="fancy-hr">
+        <button type="submit">Predict Best Crop</button>
+        <hr class="fancy-hr">
+        <div class="shape-divider"></div>
+
+
+        </div>
+      </form>
+    </div>
+
+    {% if prediction_text %}
+    <div class="result-container">
+  <!-- Download icon in top-right -->
+  <form action="/download" method="post" class="download-form">
+    <input type="hidden" name="crop" value="{{ top_predictions[0][0] }}">
+    <input type="hidden" name="confidence" value="{{ top_predictions[0][1] }}">
+    <input type="hidden" name="N" value="{{ request.form.get('N') }}">
+    <input type="hidden" name="P" value="{{ request.form.get('P') }}">
+    <input type="hidden" name="K" value="{{ request.form.get('K') }}">
+    <input type="hidden" name="temperature" value="{{ request.form.get('temperature') }}">
+    <input type="hidden" name="humidity" value="{{ request.form.get('humidity') }}">
+    <input type="hidden" name="ph" value="{{ request.form.get('ph') }}">
+    <input type="hidden" name="rainfall" value="{{ request.form.get('rainfall') }}">
+    <button type="submit" class="download-btn" title="Download PDF Report">
+  <i class="fas fa-download"></i>
+</button>
+
+  </form>
+
+  <h3>{{ prediction_text }}</h3>
+
+
+      {% if crop_image_url %}
+      <img src="{{ crop_image_url }}" alt="Recommended Crop Image" style="margin-top: 40px;" />
+
+      {% endif %}
+
+      <div class="table-container">
+  <h4>Other Top Crop Recommendations</h4>
+  <table class="recommendation-table">
+    <tr>
+      <th>Crop</th>
+      <th>Confidence (%)</th>
+    </tr>
+    {% for crop, confidence in top_predictions %}
+    <tr>
+      <td>{{ crop }}</td>
+      <td>{{ confidence }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+
+
+      <div style="margin-top: 30px;"></div>
+      <h4>Your Inputs:</h4>
+      <ul>
+        <li><b>Nitrogen:</b> {{ request.form.get('N') }}</li>
+        <li><b>Phosphorus:</b> {{ request.form.get('P') }}</li>
+        <li><b>Potassium:</b> {{ request.form.get('K') }}</li>
+        <li><b>Temperature:</b> {{ request.form.get('temperature') }}°C</li>
+        <li><b>Humidity:</b> {{ request.form.get('humidity') }}%</li>
+        <li><b>pH:</b> {{ request.form.get('ph') }}</li>
+        <li><b>Rainfall:</b> {{ request.form.get('rainfall') }} mm</li>
+      </ul>
+      </div>
+      
+
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
