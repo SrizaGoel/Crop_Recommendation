@@ -37,8 +37,7 @@ crop-recommendation/
 │
 ├── app.py                     
 ├── requirements.txt            
-├── README.md                   
-└── .gitignore                  
+├── README.md                                   
 ```
 
 
