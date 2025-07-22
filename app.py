@@ -72,7 +72,7 @@ def predict():
         return render_template('index.html',
                                prediction_text=prediction_text,
                                crop_image_url=image_url,
-                               top_predictions=other_preds,
+                               top_predictions=top_preds,
                                request=request)
     except Exception as e:
         return f"Error: {str(e)}"
