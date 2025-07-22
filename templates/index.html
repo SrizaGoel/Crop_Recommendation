@@ -249,8 +249,8 @@ h2 { font-family: 'Merriweather', serif; }
     <div class="result-container">
   <!-- Download icon in top-right -->
   <form action="/download" method="post" class="download-form">
-    <input type="hidden" name="crop" value="{{ top_predictions[0][0] }}">
-    <input type="hidden" name="confidence" value="{{ top_predictions[0][1] }}">
+    <input type="hidden" name="crop" value="{{ top_crop }}">
+<input type="hidden" name="confidence" value="{{ top_conf }}">
     <input type="hidden" name="N" value="{{ request.form.get('N') }}">
     <input type="hidden" name="P" value="{{ request.form.get('P') }}">
     <input type="hidden" name="K" value="{{ request.form.get('K') }}">
@@ -273,7 +273,7 @@ h2 { font-family: 'Merriweather', serif; }
       {% endif %}
 
       <div class="table-container">
-  <h4>Other Top Crop Recommendations</h4>
+  <h4>Other Top 3 Crop Recommendations</h4>
   <table class="recommendation-table">
     <tr>
       <th>Crop</th>

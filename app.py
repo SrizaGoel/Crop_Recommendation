@@ -23,6 +23,10 @@ fallback_images = {
 app = Flask(__name__)
 model = joblib.load('rf_pipeline.pkl')
 def fetch_crop_image(crop_name):
+    # Always use fallback for certain crops
+    if crop_name.lower() in fallback_images:
+        return fallback_images[crop_name.lower()]
+
     url = f"https://api.pexels.com/v1/search?query={crop_name}&per_page=1"
     headers = {
         "Authorization": PIXELS_API_KEY
@@ -38,6 +42,7 @@ def fetch_crop_image(crop_name):
     except Exception as e:
         print("Image fetch error:", e)
         return fallback_images.get(crop_name.lower(), "")
+
 
 
 
@@ -72,8 +77,10 @@ def predict():
         return render_template('index.html',
                                prediction_text=prediction_text,
                                crop_image_url=image_url,
-                               top_predictions=top_preds,
-                               request=request)
+                               top_predictions=other_preds,
+                               request=request,
+                               top_crop=top_crop,         
+                               top_conf=top_conf)
     except Exception as e:
         return f"Error: {str(e)}"
 
